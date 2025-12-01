@@ -2,7 +2,7 @@
 COMP 163 - Project 3: Quest Chronicles
 Character Manager Module - Starter Code
 
-Name: [Your Name Here]
+Name: [Luke Jensen]
 
 AI Usage: [Document any AI assistance used]
 
@@ -102,28 +102,15 @@ def save_character(character, save_directory="data/save_games"):
             file.write(f"MAGIC: {character['magic']}\n")
             file.write(f"EXPERIENCE: {character['experience']}\n")
             file.write(f"GOLD: {character['gold']}\n")
-            file.write(f"INVENTORY: {','.join(character['inventory'])}\n")
-            file.write(f"ACTIVE_QUESTS: {','.join(character['active_quests'])}\n")
-            file.write(f"COMPLETED_QUESTS: {','.join(character['completed_quests'])}\n")
+            file.write(f"INVENTORY: {','.join(character['inventory']) if character['inventory'] else ''}\n")
+            file.write(f"ACTIVE_QUESTS: {','.join(character['active_quests']) if character['active_quests'] else ''}\n")
+            file.write(f"COMPLETED_QUESTS: {','.join(character['completed_quests']) if character['completed_quests'] else ''}\n")
     except Exception as e:
         raise e
 
     return True
 
 def load_character(character_name, save_directory="data/save_games"):
-    """
-    Load character from save file
-    
-    Args:
-        character_name: Name of character to load
-        save_directory: Directory containing save files
-    
-    Returns: Character dictionary
-    Raises: 
-        CharacterNotFoundError if save file doesn't exist
-        SaveFileCorruptedError if file exists but can't be read
-        InvalidSaveDataError if data format is wrong
-    """
     filename = os.path.join(save_directory, f"{character_name}_save.txt")
 
     if not os.path.exists(filename):
@@ -136,27 +123,40 @@ def load_character(character_name, save_directory="data/save_games"):
         raise SaveFileCorruptedError(f"Could not read save file for {character_name}")
 
     character = {}
+
     try:
         for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+
             if ":" not in line:
                 raise InvalidSaveDataError("Missing ':' in save data")
 
-            key, value = line.strip().split(": ", 1)
+            # --- Safe split (fixes your failing test) ---
+            if ": " in line:
+                key, value = line.split(": ", 1)
+            else:
+                key, value = line.split(":", 1)
+                value = value.lstrip()
+            # --------------------------------------------
 
             # Lists
             if key in ("INVENTORY", "ACTIVE_QUESTS", "COMPLETED_QUESTS"):
                 character[key.lower()] = value.split(",") if value else []
-            # Ints
+
+            # Integers
             elif key in ("LEVEL", "HEALTH", "MAX_HEALTH", "STRENGTH", "MAGIC", "EXPERIENCE", "GOLD"):
                 character[key.lower()] = int(value)
+
             # Strings
             else:
                 character[key.lower()] = value
+
     except Exception:
         raise InvalidSaveDataError("Save file format incorrect")
 
     validate_character_data(character)
-
     return character
 
 def list_saved_characters(save_directory="data/save_games"):
