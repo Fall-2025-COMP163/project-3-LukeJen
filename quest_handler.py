@@ -17,6 +17,9 @@ from custom_exceptions import (
     InsufficientLevelError
 )
 
+
+import character_manager
+
 # ============================================================================
 # QUEST MANAGEMENT
 # ============================================================================
