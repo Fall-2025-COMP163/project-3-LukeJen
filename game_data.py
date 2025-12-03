@@ -75,9 +75,6 @@ def load_items(filename="data/items.txt"):
 
     return items
 
-# ============================================================================
-# VALIDATION FUNCTIONS (NO .get() USED)
-# ============================================================================
 
 def validate_quest_data(quest_dict):
     required = {
@@ -203,10 +200,6 @@ DESCRIPTION: Basic armor that increases maximum health.
             raise CorruptedDataError(f"Could not create default items file: {e}")
 
     return True
-
-# ============================================================================
-# PARSERS (UNCHANGED EXCEPT NO .get())
-# ============================================================================
 
 def parse_quest_block(lines):
     data = {}
