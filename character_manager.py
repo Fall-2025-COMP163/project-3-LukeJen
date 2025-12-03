@@ -43,24 +43,25 @@ def create_character(name, character_class):
         "class": character_class,
         "level": 1,
         "experience": 0,
-        "gold": 0,
+        "gold": 100, 
 
-        # Stats
+    # Stats
         "strength": 10,
         "defense": 10,
         "health": 100,
         "max_health": 100,
+        "magic": 5,  
 
-        # Inventory
+    # Inventory
         "inventory": [],
 
-        # Equipment
+    # Equipment
         "equipped_weapon": None,
         "equipped_weapon_effect": None,
         "equipped_armor": None,
         "equipped_armor_effect": None,
 
-        # Quest tracking
+    # Quests
         "active_quests": [],
         "completed_quests": []
     }
