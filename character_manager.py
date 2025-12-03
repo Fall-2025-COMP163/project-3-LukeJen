@@ -34,9 +34,13 @@ def create_character(name, character_class):
     
     Raises: InvalidCharacterClassError if class is not valid
     """
+    valid_classes = ["Warrior", "Mage", "Rogue", "Cleric"]
+    if character_class not in valid_classes:
+        raise InvalidCharacterClassError(f"Invalid class: {character_class}")
+
     character = {
         "name": name,
-        "class": class_type,
+        "class": character_class,
         "level": 1,
         "experience": 0,
         "gold": 0,
@@ -50,13 +54,13 @@ def create_character(name, character_class):
         # Inventory
         "inventory": [],
 
-        # Equipment (fix: must initialize these!)
+        # Equipment
         "equipped_weapon": None,
         "equipped_weapon_effect": None,
         "equipped_armor": None,
         "equipped_armor_effect": None,
 
-        # Quests
+        # Quest tracking
         "active_quests": [],
         "completed_quests": []
     }
