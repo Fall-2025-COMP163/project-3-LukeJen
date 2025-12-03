@@ -406,7 +406,6 @@ def explore():
         print("You are dead and cannot fight.")
         return
 
-    # Removed .get()
     if "winner" in result and result["winner"] == "player":
 
         if "xp" not in result:
