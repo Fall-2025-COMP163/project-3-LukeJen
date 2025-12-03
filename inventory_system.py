@@ -225,7 +225,7 @@ def apply_stat_effect(character, stat_name, value):
 def display_inventory(character, item_data_dict):
     """
     Display formatted inventory.
-    NOTE: No .get() used — unknown items will crash unless guaranteed valid by game.
+    NOTE: unknown items will crash unless guaranteed valid by game.
     """
     print("\n=== INVENTORY ===")
     if not character["inventory"]:
@@ -234,10 +234,13 @@ def display_inventory(character, item_data_dict):
 
     counted = {}
     for item_id in character["inventory"]:
-        counted[item_id] = counted.get(item_id, 0) + 1  # This is NOT dict.get(), it's local
+        if item_id in counted:
+            counted[item_id] += 1
+        else:
+            counted[item_id] = 1
 
     for item_id, qty in counted.items():
-        item = item_data_dict[item_id]  # No .get()
+        item = item_data_dict[item_id]
         print(f"{item['name']} (x{qty}) - {item['type']}")
 
 # ============================================================================
